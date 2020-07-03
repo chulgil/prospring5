@@ -4,9 +4,9 @@ public class HelloWorld {
 
 	public static void main(String[] args) {
 
-		MessageRenderer mr = new StandardOutMessageRenderer();
+		MessageRenderer mr = MessageSupportFactory.getInstance().getMessageRenderer();
 		
-		MessageProvider mp = new HelloWorldMessageProvider();
+		MessageProvider mp = MessageSupportFactory.getInstance().getMessageProvider();
 		
 		mr.setMessageProvider(mp);
 		
