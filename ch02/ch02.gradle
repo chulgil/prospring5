@@ -1,15 +1,36 @@
 subprojects {
     group 'me.chulgil.prospring5.ch02'
     apply plugin: 'java'
+    apply plugin: 'eclipse'
 
-    /*Task that copies all the dependencies under build/libs */
-    task copyDependencies(type: Copy) {
-        from configurations.compile
-        into 'build/libs'
-    }
+	
+	jar {
+	    manifest {
+	        attributes 'Main-Class': 'me.chulgil.prospring5.ch02.decoupled.HelloWorldSpringDI'
+	    }
+    	dependsOn configurations.runtime
+    	from {
+        	configurations.runtimeClasspath.collect {it.isDirectory()? it: zipTree(it)}
+    	}
+    	// https://docs.gradle.org/current/javadoc/org/gradle/api/file/DuplicatesStrategy.html
+	    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+	}
+	
+    
+
+    configurations { 
+    	localDeps
+	}
 
     dependencies {
-        compile spring.context, misc.slf4jJcl, misc.logback
-        testCompile testing.junit
+        implementation spring.context, misc.slf4jJcl, misc.logback
+        testImplementation testing.junit
     }
+
+    /*Task that copies all the dependencies under build/libs */
+	task copyToLib(type: Copy) {
+    	from configurations.localDeps
+        into 'build/libs'
+	}
+	
 }

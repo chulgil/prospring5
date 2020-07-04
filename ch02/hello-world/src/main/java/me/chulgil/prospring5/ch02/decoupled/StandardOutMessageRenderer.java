@@ -1,5 +1,6 @@
 package me.chulgil.prospring5.ch02.decoupled;
 
+
 public class StandardOutMessageRenderer implements MessageRenderer {
 
     private MessageProvider messageProvider;
